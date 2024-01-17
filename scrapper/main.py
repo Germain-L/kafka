@@ -29,7 +29,7 @@ def fetch_and_save_traffic_data():
         print(f"Failed to fetch data at {datetime.now()}: {response.status_code}")
 
 # Planifier l'exécution toutes les 5 minutes
-schedule.every(3).minutes.do(fetch_and_save_traffic_data)
+schedule.every(10).minutes.do(fetch_and_save_traffic_data)
 
 # Exécuter le script pour la durée spécifiée
 while datetime.now() < end_time:
