@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Response
 import csv
 import os
 import logging
@@ -10,12 +10,8 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s:%(message)s')
 
 def read_csv(file_name):
-    data = []
     with open(file_name, 'r') as file:
-        csv_reader = csv.reader(file)
-        for row in csv_reader:
-            data.append(row)
-    return data
+        return file.read()
 
 @app.route('/data/<date>/<hour>/<minute>')
 def send_csv_data(date, hour, minute):
@@ -31,10 +27,11 @@ def send_csv_data(date, hour, minute):
 
     if matching_files:
         logging.info(f"Fichier trouvé : {matching_files[0]}")
-        return jsonify(read_csv(matching_files[0]))
+        csv_data = read_csv(matching_files[0])
+        return Response(csv_data, mimetype='text/plain')
     else:
         logging.error("Fichier non trouvé")
-        return jsonify({"error": "File not found"}), 404
+        return "File not found", 404
 
 if __name__ == '__main__':
     app.run(debug=True)
