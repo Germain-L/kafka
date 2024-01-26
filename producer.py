@@ -55,7 +55,7 @@ def produce_messages(data):
 def main():
     start_date = datetime(2024, 1, 17)  # Start date
     end_date = datetime(2024, 1, 18)    # End date
-    time_delta = timedelta(minutes=1)   # Interval of 1 minute
+    time_delta = timedelta(seconds=1)   # Interval of 1 minute
 
     for current_datetime in generate_datetime_sequence(start_date, end_date, time_delta):
         date_str = current_datetime.strftime("%Y%m%d")
@@ -65,8 +65,6 @@ def main():
         data = fetch_traffic_data(date_str, hour_str, minute_str)
         if data:
             produce_messages(data)
-
-        time.sleep(1)
 
 if __name__ == "__main__":
     main()
